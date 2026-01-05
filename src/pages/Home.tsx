@@ -47,7 +47,7 @@ const Home = () => {
        <PanelLeft onClick={toggleSidebar} size={28} className="pt-3 pl-2"/>
       <div className="p-4 md:p-12">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">All Thoughts</h1>
+          <h1 className="text-2xl font-bold">Thoughts</h1>
           <div className="flex gap-2">
             <Dialog open={openShare} onOpenChange={setOpenShare}>
               <DialogTrigger asChild>
