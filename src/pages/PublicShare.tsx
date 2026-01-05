@@ -54,7 +54,7 @@ const PublicShare = () => {
               contents.map((item) => {
                 return (
                   <ContentCard
-                    tags={["react", "next"]}
+                    tags={item.tags}
                     createdAt={item.createdAt}
                     link={item.link}
                     title={item.title}
