@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { createContentThunk, getContentThunk, getShareStatusThunk, updateShareThunk } from "@/store/slices/contentSlice";
 import { useParams } from "react-router-dom";
-import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 
 type AddContentDialogProps = {
@@ -26,8 +26,6 @@ const Home = () => {
 
   const [openAddContent, setOpenAddContent] = useState(false);
   const [openShare, setOpenShare] = useState(false);
-
-  const {isMobile } = useSidebar()
  
 
   const fetchContent = async () => {
