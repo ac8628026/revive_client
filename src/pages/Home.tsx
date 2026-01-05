@@ -45,7 +45,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen w-full">
-       <SidebarTrigger className={`pt-3 pl-2 ${isMobile?"block":"hidden"}`}/>
+       <SidebarTrigger className={`pt-3 pl-2 block sm:hidden`}/>
       <div className="p-4 md:p-12">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">All Thoughts</h1>
