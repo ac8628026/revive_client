@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Copy, Plus, Share2 } from "lucide-react";
+import { Copy, PanelLeft, Plus, Share2 } from "lucide-react";
 import ContentCard from "../components/ContentCard";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { createContentThunk, getContentThunk, getShareStatusThunk, updateShareThunk } from "@/store/slices/contentSlice";
 import { useParams } from "react-router-dom";
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useSidebar } from "@/components/ui/sidebar";
 
 
 type AddContentDialogProps = {
@@ -19,6 +19,7 @@ type AddContentDialogProps = {
 
 const Home = () => {
   const dispatch = useAppDispatch();
+  const {toggleSidebar} = useSidebar()
 
   const { type } = useParams<{ type?: string }>();
   const { contents, fetchError } = useAppSelector((s) => s.content);
@@ -43,7 +44,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen w-full">
-       <SidebarTrigger className="pt-3 pl-2"/>
+       <PanelLeft onClick={toggleSidebar} size={28} className="pt-3 pl-2"/>
       <div className="p-4 md:p-12">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">All Thoughts</h1>

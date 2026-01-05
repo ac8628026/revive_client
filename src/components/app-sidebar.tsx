@@ -11,7 +11,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarHeader,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "./mode-toggle";
 import { logout, userThunk } from "@/store/slices/authSlice";
@@ -56,7 +55,6 @@ const dispatchdata =async()=>{
                Revive
             </span>}
             </div>
-            {!isCollapsed &&<SidebarTrigger />}
           </SidebarHeader>
           <SidebarGroupContent>
             <SidebarMenu className="py-4 ">
