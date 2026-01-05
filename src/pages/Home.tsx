@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { createContentThunk, getContentThunk, getShareStatusThunk, updateShareThunk } from "@/store/slices/contentSlice";
 import { useParams } from "react-router-dom";
-// import { SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 
 type AddContentDialogProps = {
@@ -43,10 +43,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen w-full">
-      <button className="fixed top-4 left-4 z-[9999] bg-red-500 text-white sm:hidden">
-      TEST
-   </button>
-
+       <SidebarTrigger className="pt-3 pl-2"/>
       <div className="p-4 md:p-12">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">All Thoughts</h1>
