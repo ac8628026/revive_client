@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { createContentThunk, getContentThunk, getShareStatusThunk, updateShareThunk } from "@/store/slices/contentSlice";
 import { useParams } from "react-router-dom";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
+
 
 type AddContentDialogProps = {
   setOpenAddContent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,6 +27,9 @@ const Home = () => {
   const [openAddContent, setOpenAddContent] = useState(false);
   const [openShare, setOpenShare] = useState(false);
 
+  const {isMobile } = useSidebar()
+ 
+
   const fetchContent = async () => {
     await dispatch(getContentThunk());
   };
@@ -33,13 +38,15 @@ const Home = () => {
     fetchContent();
   }, []);
 
+
   const handleShareBrain = async () => {
     await dispatch(getShareStatusThunk());
   };
 
   return (
     <div className="min-h-screen w-full">
-      <div className="p-6 md:p-12">
+      {isMobile && <SidebarTrigger className="pt-3"/>}
+      <div className="p-4 md:p-12">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">All Thoughts</h1>
           <div className="flex gap-2">
@@ -70,7 +77,7 @@ const Home = () => {
               allContents.map((item) => {
                 return (
                   <ContentCard
-                    tags={["react", "next"]}
+                    tags={item.tags}
                     createdAt={item.createdAt}
                     link={item.link}
                     title={item.title}

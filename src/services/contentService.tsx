@@ -9,6 +9,7 @@ export type Content = {
   type: string;
   userId: string;
   createdAt:string;
+  tags?:string[];
 };
 
 export type ContentResponse = {
