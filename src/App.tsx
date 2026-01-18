@@ -33,7 +33,8 @@ const App = () => {
             >
               <Route index element={<Home />} />
               <Route path="/:type" element={<Home />} />
-              <Route path="chat" element={<Chat />} />
+              <Route path="/chat" element={<Chat />} />
+              <Route path="/chat/:chatId" element={<Chat />} />
             </Route>
 
             <Route path="/brain/share/:id" element={<PublicShare />} />

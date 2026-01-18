@@ -1,4 +1,4 @@
-import { Youtube, X, Link2, FileText, BrainCircuit, MessageCircleCode } from "lucide-react";
+import { Youtube, X, Link2, FileText, BrainCircuit, MessageCircleCode, Sun, Moon, MonitorCog, Sparkles } from "lucide-react";
 
 import {
   useSidebar,
@@ -12,12 +12,13 @@ import {
   SidebarMenuItem,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import { ModeToggle } from "./mode-toggle";
 import { logout, userThunk } from "@/store/slices/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
+import { Button } from '@/components/ui/button';
+import { useTheme } from '@/components/theme-provider';
+
 
 export function AppSidebar() {
   const { state,toggleSidebar } = useSidebar()
@@ -25,6 +26,7 @@ export function AppSidebar() {
   const dispatch = useAppDispatch();
   const { isAuthenticated,userDetails } = useAppSelector((s) => s.auth);
   const navigate = useNavigate();
+  const { setTheme,theme } = useTheme()
 
   const handleLogout = () => {
     dispatch(logout());
@@ -73,9 +75,25 @@ const dispatchdata =async()=>{
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="flex px-3 w-full">
-        {!isCollapsed && <Button onClick={handleLogout}>Logout</Button>}
-       {!isCollapsed && <ModeToggle />}
+       
+       {!isCollapsed && 
+       <div className="flex gap-2 justify-around ">
+        <Button className={`${theme==='light'?"flex-2":"flex-1"}`} variant={`${theme==='light'?"default":"outline"}`} onClick={() => setTheme("light")}>
+          <Sun className="h-[1.2rem] w-[1.2rem]  rotate-0 transition-all dark:-rotate-90" />
+        </Button>
+        <Button className={`${theme==='dark'?"flex-2":"flex-1"}`} variant={`${theme==='dark'?"default":"outline"}`} onClick={() => setTheme("dark")}>
+          <Moon className="h-[1.2rem] w-[1.2rem]  " />
+        </Button>
+        <Button className={`${theme==='system'?"flex-2 ":"flex-1"}`} variant={`${theme==='system'?"default":"outline"}`} onClick={() => setTheme("system")}>
+          <MonitorCog className="h-[1.2rem] w-[1.2rem]  " />
+        </Button>
+       </div>}
+      {!isCollapsed && <Button onClick={handleLogout}>Logout</Button>}
       </SidebarFooter>
+       <div  className="border-t flex justify-between px-4 py-2">
+         <div>{userDetails?.name}</div>
+         <div className="px-3 py-1 border rounded-full uppercase">{userDetails?.name.slice(0,1) || 'U'}</div>
+       </div>
     </Sidebar>
   );
 }
@@ -98,7 +116,7 @@ const items = [
     icon: Youtube,
   },
   {
-    title: "Documents",
+    title: "Pdf and Documents",
     url: "/document",
     icon: FileText,
   },
@@ -108,7 +126,7 @@ const items = [
     icon: Link2,
   },
   {
-    title: "Chat With Your Brain",
+    title: `Chat With Your Brain ✨`,
     url: "/chat",
     icon: MessageCircleCode,
   },

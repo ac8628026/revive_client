@@ -55,12 +55,15 @@ export function SignupForm({
 
   return (
     <div className={cn("flex flex-col gap-2", className)} {...props}>
+       **The server may take a few minutes to warm up.**
       <div className="flex flex-col gap-6  ">
         <Card {...props} >
           <CardHeader>
             <CardTitle>Create an account</CardTitle>
             <CardDescription>
-              Enter your information below to create your account
+              Enter your information below to create your account 
+              <br />
+              *you can put any random email from now
             </CardDescription>
           </CardHeader>
           <CardContent>

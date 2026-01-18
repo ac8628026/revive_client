@@ -18,7 +18,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch,useAppSelector } from "@/store/hooks";
-import { loginThunk } from "@/store/slices/authSlice";
+import { loginThunk, signupThunk } from "@/store/slices/authSlice";
 
 export function LoginForm({
   className,
@@ -42,6 +42,14 @@ export function LoginForm({
     dispatch(loginThunk(userInfo))
    
   };
+ 
+  
+  const handleGuestLogin = async()=>{
+    const guestEmail = 'guest'+Math.floor(Math.random()*1000000).toString()+'@gmail.com';
+    const guestPass = 'Guest@'+Math.floor(Math.random()*10000).toString();
+    await dispatch(signupThunk({name:"Guest",email:guestEmail,password:guestPass})).unwrap()
+    dispatch(loginThunk({email:guestEmail,password:guestPass}))
+  }
 
   useEffect(()=>{
     if(isAuthenticated){
@@ -51,6 +59,7 @@ export function LoginForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
+      **The server may take a few minutes to warm up.**
       <Card>
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
@@ -98,6 +107,9 @@ export function LoginForm({
               <Field>
                 <Button type="submit">
                   {loading ? "Loging In..." : "Login"}
+                </Button>
+                <Button variant={"outline"} onClick={handleGuestLogin}>
+                  Guest Login
                 </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <Link to="/signup">Sign up</Link>

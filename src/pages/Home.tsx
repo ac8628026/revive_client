@@ -1,17 +1,37 @@
 import { Button } from "@/components/ui/button";
-import { Copy, PanelLeft, Plus, Share2 } from "lucide-react";
+import { BrainCircuit, Copy, PanelLeft, Plus, Share2 } from "lucide-react";
 import ContentCard from "../components/ContentCard";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { createContentThunk, getContentThunk, getShareStatusThunk, updateShareThunk } from "@/store/slices/contentSlice";
+import {
+  createContentThunk,
+  getContentThunk,
+  getShareStatusThunk,
+  updateShareThunk,
+} from "@/store/slices/contentSlice";
 import { useParams } from "react-router-dom";
 import { useSidebar } from "@/components/ui/sidebar";
-
 
 type AddContentDialogProps = {
   setOpenAddContent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,15 +39,14 @@ type AddContentDialogProps = {
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const {toggleSidebar} = useSidebar()
+  const { toggleSidebar } = useSidebar();
 
   const { type } = useParams<{ type?: string }>();
-  const { contents, fetchError } = useAppSelector((s) => s.content);
+  const { contents, fetchError, fetching } = useAppSelector((s) => s.content);
   const allContents = type ? contents.filter((c) => c.type === type) : contents;
 
   const [openAddContent, setOpenAddContent] = useState(false);
   const [openShare, setOpenShare] = useState(false);
- 
 
   const fetchContent = async () => {
     await dispatch(getContentThunk());
@@ -37,14 +56,14 @@ const Home = () => {
     fetchContent();
   }, []);
 
-
   const handleShareBrain = async () => {
     await dispatch(getShareStatusThunk());
   };
 
   return (
     <div className="min-h-screen w-full">
-       <PanelLeft onClick={toggleSidebar} size={28} className="pt-3 pl-2"/>
+      <div className="flex justify-center "> **The server may take a few minutes to warm up.**</div>
+      <PanelLeft onClick={toggleSidebar} size={28} className="pt-1 pl-2" />
       <div className="p-4 md:p-12">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Thoughts</h1>
@@ -69,7 +88,13 @@ const Home = () => {
           </div>
         </div>
         {fetchError ? (
-          <div> {fetchError}</div>
+          <div className="p-10"> {fetchError}</div>
+        ) : fetching ? (
+          <div className="flex justify-center pt-10 ">
+            <BrainCircuit className="brain-loader" strokeWidth={2} size={32} />
+          </div>
+        ) : allContents.length === 0 ? (
+          <div className="p-4">No Thoughts Found</div>
         ) : (
           <div className="grid p-6 gap-4 grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
             {allContents &&
@@ -98,7 +123,11 @@ export default Home;
 const AddContentDilog = ({ setOpenAddContent }: AddContentDialogProps) => {
   const { creating } = useAppSelector((s) => s.content);
   const dispatch = useAppDispatch();
-  const [contentData, setContentData] = useState({ link: "", title: "", type: ""});
+  const [contentData, setContentData] = useState({
+    link: "",
+    title: "",
+    type: "",
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -127,7 +156,7 @@ const AddContentDilog = ({ setOpenAddContent }: AddContentDialogProps) => {
       <DialogHeader>
         <DialogTitle>Add Content</DialogTitle>
         <DialogDescription>
-          Your Second Brain is waiting for next thought.
+          Your Another Brain is waiting for next thought.
         </DialogDescription>
       </DialogHeader>
       <div className="grid gap-4">
@@ -167,7 +196,7 @@ const AddContentDilog = ({ setOpenAddContent }: AddContentDialogProps) => {
                 <SelectItem value="youtube">Youtube</SelectItem>
                 <SelectItem value="x">X</SelectItem>
                 <SelectItem value="links">Links</SelectItem>
-                <SelectItem value="document">Document</SelectItem>
+                {/* <SelectItem value="document">Document</SelectItem> */}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -179,7 +208,7 @@ const AddContentDilog = ({ setOpenAddContent }: AddContentDialogProps) => {
         </DialogClose>
         <Button onClick={handleSubmit}>
           {" "}
-          {creating ? "Saving" : "Save changes"}
+          {creating ? "Saving..." : "Save changes"}
         </Button>
       </DialogFooter>
     </DialogContent>
@@ -187,7 +216,9 @@ const AddContentDilog = ({ setOpenAddContent }: AddContentDialogProps) => {
 };
 
 const ShareDilog = () => {
-  const { shareData, getsharing, shareError } = useAppSelector((s) => s.content);
+  const { shareData, getsharing, shareError } = useAppSelector(
+    (s) => s.content
+  );
   const dispatch = useAppDispatch();
 
   const handleSwitch = async () => {
@@ -197,7 +228,9 @@ const ShareDilog = () => {
       await dispatch(updateShareThunk({ isShare: true }));
     }
   };
-  const brainShareLink:string =  `${import.meta.env.VITE_FRONTEND_BASE_URL}/brain/share/${shareData.shareId}`
+  const brainShareLink: string = `${
+    import.meta.env.VITE_FRONTEND_BASE_URL
+  }/brain/share/${shareData.shareId}`;
   const handleCopy = async () => {
     await navigator.clipboard.writeText(brainShareLink);
   };
@@ -220,7 +253,9 @@ const ShareDilog = () => {
         </DialogDescription>
       </DialogHeader>
       {getsharing ? (
-        <div>getting Share details</div>
+        <div className="flex justify-center w-full">
+          <BrainCircuit className="brain-loader" strokeWidth={2}/>
+        </div>
       ) : (
         shareData.shared && (
           <>
@@ -229,11 +264,7 @@ const ShareDilog = () => {
                 <Label htmlFor="link" className="sr-only">
                   Link
                 </Label>
-                <Input
-                  id="link"
-                  defaultValue={brainShareLink}
-                  readOnly
-                />
+                <Input id="link" defaultValue={brainShareLink} readOnly />
               </div>
             </div>
             <DialogFooter className="sm:justify-start">
