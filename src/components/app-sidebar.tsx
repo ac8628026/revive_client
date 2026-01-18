@@ -1,4 +1,4 @@
-import { Youtube, X, Link2, FileText, BrainCircuit, MessageCircleCode, Sun, Moon, MonitorCog, Sparkles } from "lucide-react";
+import { Youtube, X, Link2, FileText, BrainCircuit, MessageCircleCode, Sun, Moon, MonitorCog } from "lucide-react";
 
 import {
   useSidebar,
